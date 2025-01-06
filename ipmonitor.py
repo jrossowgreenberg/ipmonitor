@@ -7,7 +7,7 @@ from apprise import Apprise
 # ----------------------------
 # Configuration and Logging
 # ----------------------------
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
