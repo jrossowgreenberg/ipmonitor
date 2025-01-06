@@ -1,0 +1,45 @@
+name: Build and Push Docker Image to GHCR
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' 
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/ipmonitor:latest .
+
+      - name: Tag Docker Image with Current Date
+        run: |
+          DATE_TAG=$(date +%Y-%m-%d)
+          docker tag ghcr.io/${{ github.repository_owner }}/ipmonitor:latest ghcr.io/${{ github.repository_owner }}/ipmonitor:$DATE_TAG
+
+      - name: Push Docker Images to GHCR
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/ipmonitor:latest
+          docker push ghcr.io/${{ github.repository_owner }}/ipmonitor:$(date +%Y-%m-%d)
+
+      - name: Cleanup Docker Local Environment
+        run: docker system prune -af
