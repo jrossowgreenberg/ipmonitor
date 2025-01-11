@@ -77,6 +77,9 @@ def monitor_public_ip():
             if current_public_ip is None:
                 current_public_ip = new_ip
                 logging.info(f"Initial public IP detected: {current_public_ip}")
+                send_notification(
+                    f"ipmonitor started up. Initial public IP detected: {current_public_ip}"
+                )
             elif new_ip != current_public_ip:
                 logging.info(f"Public IP changed from {current_public_ip} to {new_ip}")
                 send_notification(
