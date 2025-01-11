@@ -40,6 +40,7 @@ failure_count = 0
 MAX_FAILURES = int(
     os.getenv("MAX_FAILURES", 3)
 )  # Max consecutive failures before notifying
+CHECK_INTERVAL = int(os.getenv("CHECK_INTERVAL", 60))
 
 
 def get_public_ip():
@@ -98,7 +99,8 @@ def monitor_public_ip():
                 )
                 failure_count = 0  # Reset after sending failure notification
 
-        time.sleep(int(os.getenv("CHECK_INTERVAL", 60)))
+        logging.info(f"Waiting for the next check in {CHECK_INTERVAL}...")
+        time.sleep(CHECK_INTERVAL)
 
 
 # ----------------------------
