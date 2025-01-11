@@ -6,7 +6,7 @@ COPY ipmonitor.py .
 
 RUN pip install requests apprise
 
-ENV VERSION=0.1.2
+ENV VERSION=0.1.3
 ENV CHECK_INTERVAL=60
 ENV APPRISE_URLS=[]
 ENV MAX_FAILURES=3
